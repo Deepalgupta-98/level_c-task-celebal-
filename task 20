@@ -1,0 +1,12 @@
+WITH DepartmentAverages AS (
+    SELECT
+        department_code,
+        AVG(salary) AS avg_salary
+    FROM Employee
+    GROUP BY department_code
+)
+SELECT
+    COUNT(*)
+FROM Employee E
+JOIN DepartmentAverages DA ON E.department_code = DA.department_code
+WHERE E.salary > DA.avg_salary;
