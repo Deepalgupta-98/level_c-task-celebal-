@@ -1,0 +1,8 @@
+SELECT
+    C.company_code,
+    AVG(E.salary) AS average_salary
+FROM Company C
+JOIN Lead_Manager LM ON C.company_code = LM.company_code
+JOIN Employee E ON C.company_code = E.company_code
+WHERE LM.years_of_experience > 5
+GROUP BY C.company_code;
