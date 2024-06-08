@@ -1,0 +1,6 @@
+SELECT
+    E.employee_code,
+    E.name
+FROM Employee E
+JOIN Manager M ON E.manager_code = M.manager_code
+WHERE E.salary > M.salary;
