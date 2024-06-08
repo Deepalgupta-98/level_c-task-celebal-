@@ -1,0 +1,26 @@
+WITH DailySubmissions AS (
+    SELECT
+        submission_date,
+        hacker_id,
+        COUNT(submission_id) AS submissions
+    FROM Submissions
+    WHERE submission_date BETWEEN '2016-03-01' AND '2016-03-15'
+    GROUP BY submission_date, hacker_id
+),
+DailyStats AS (
+    SELECT
+        submission_date,
+        COUNT(DISTINCT hacker_id) AS unique_hackers,
+        hacker_id,
+        MAX(submissions) AS max_submissions
+    FROM DailySubmissions
+    GROUP BY submission_date
+)
+SELECT
+    DS.submission_date,
+    DS.unique_hackers,
+    DS.hacker_id,
+    H.name
+FROM DailyStats DS
+JOIN Hackers H ON DS.hacker_id = H.hacker_id
+ORDER BY DS.submission_date;
