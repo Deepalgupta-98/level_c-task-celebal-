@@ -1,0 +1,10 @@
+SELECT DISTINCT
+    LEAST(X, Y) AS X,
+    GREATEST(X, Y) AS Y
+FROM Functions F1
+WHERE EXISTS (
+    SELECT 1
+    FROM Functions F2
+    WHERE F2.X = F1.Y AND F2.Y = F1.X
+)
+ORDER BY X, Y;
