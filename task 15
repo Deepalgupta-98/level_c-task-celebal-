@@ -1,0 +1,14 @@
+WITH EmployeeSalaries AS (
+    SELECT
+        E.employee_code,
+        E.company_code,
+        E.salary,
+        ROW_NUMBER() OVER (PARTITION BY E.company_code ORDER BY E.salary DESC) AS rn
+    FROM Employee E
+)
+SELECT
+    E.employee_code,
+    E.company_code,
+    E.salary
+FROM EmployeeSalaries E
+WHERE rn = 1;
