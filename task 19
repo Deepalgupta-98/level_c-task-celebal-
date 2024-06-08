@@ -1,0 +1,6 @@
+SELECT
+    E.employee_code,
+    E.name
+FROM Employee E
+GROUP BY E.employee_code, E.name
+HAVING COUNT(DISTINCT E.company_code) > 1;
