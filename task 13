@@ -1,0 +1,7 @@
+SELECT
+    C.name
+FROM Company C
+JOIN Employee E ON C.company_code = E.company_code
+GROUP BY C.name
+ORDER BY COUNT(E.employee_code) DESC
+LIMIT 1;
