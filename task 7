@@ -1,0 +1,15 @@
+WITH RECURSIVE PrimeNumbers AS (
+    SELECT 2 AS number
+    UNION ALL
+    SELECT number + 1
+    FROM PrimeNumbers
+    WHERE number < 1000
+)
+SELECT STRING_AGG(CAST(number AS VARCHAR), '&') AS primes
+FROM PrimeNumbers
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM PrimeNumbers AS PN
+    WHERE PN.number < PrimeNumbers.number
+    AND PrimeNumbers.number % PN.number = 0
+);
