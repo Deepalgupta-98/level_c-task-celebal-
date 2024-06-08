@@ -1,0 +1,13 @@
+WITH AverageAges AS (
+    SELECT
+        C.company_code,
+        AVG(E.age) AS average_age
+    FROM Company C
+    JOIN Employee E ON C.company_code = E.company_code
+    GROUP BY C.company_code
+)
+SELECT
+    company_code
+FROM AverageAges
+ORDER BY average_age DESC
+LIMIT 1;
