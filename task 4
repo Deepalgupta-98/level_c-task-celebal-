@@ -1,0 +1,28 @@
+WITH ChallengeStats AS (
+    SELECT
+        C.contest_id,
+        C.hacker_id,
+        H.name,
+        COALESCE(SUM(VS.total_views), 0) AS total_views,
+        COALESCE(SUM(VS.total_unique_views), 0) AS total_unique_views,
+        COALESCE(SUM(SS.total_submissions), 0) AS total_submissions,
+        COALESCE(SUM(SS.total_accepted_submissions), 0) AS total_accepted_submissions
+    FROM Contests C
+    JOIN Colleges CO ON C.contest_id = CO.contest_id
+    JOIN Challenges CH ON CO.college_id = CH.college_id
+    LEFT JOIN View_Stats VS ON CH.challenge_id = VS.challenge_id
+    LEFT JOIN Submission_Stats SS ON CH.challenge_id = SS.challenge_id
+    JOIN Hackers H ON C.hacker_id = H.hacker_id
+    GROUP BY C.contest_id, C.hacker_id, H.name
+)
+SELECT
+    contest_id,
+    hacker_id,
+    name,
+    total_submissions,
+    total_accepted_submissions,
+    total_views,
+    total_unique_views
+FROM ChallengeStats
+WHERE total_submissions + total_accepted_submissions + total_views + total_unique_views > 0
+ORDER BY contest_id;
