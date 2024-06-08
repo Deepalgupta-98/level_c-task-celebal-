@@ -1,0 +1,37 @@
+---task 1---
+
+WITH ConsecutiveTasks AS (
+    SELECT
+        Task_ID,
+        Start_Date,
+        End_Date,
+        ROW_NUMBER() OVER (ORDER BY Start_Date) AS RowNum,
+        ROW_NUMBER() OVER (ORDER BY End_Date) AS RowNum_End
+    FROM Projects
+),
+TaskGroups AS (
+    SELECT
+        Task_ID,
+        Start_Date,
+        End_Date,
+        RowNum,
+        RowNum - RowNum_End AS GroupID
+    FROM ConsecutiveTasks
+),
+GroupedTasks AS (
+    SELECT
+        MIN(Start_Date) AS Project_Start_Date,
+        MAX(End_Date) AS Project_End_Date,
+        COUNT(*) AS Duration,
+        GroupID
+    FROM TaskGroups
+    GROUP BY GroupID
+)
+SELECT
+    Project_Start_Date,
+    Project_End_Date,
+    Duration
+FROM GroupedTasks
+ORDER BY
+    Duration ASC,
+    Project_Start_Date ASC;
